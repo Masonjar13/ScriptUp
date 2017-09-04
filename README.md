@@ -6,24 +6,24 @@ Are you tired of having to see tons of AHK scripts running in the processes list
 
 ![ScriptUp](https://i.imgur.com/3Kutfco.png)
 
-Easily add as many AHK scripts as you'd like, from any folder on your PC and ScriptUp will house them all under it's own process name. You can even compile it to have it run under a readable, separated process name!
+Easily add as many AHK scripts as you'd like, from any folder on your PC, and ScriptUp will house them all under its own process name. You can even compile it to have it run under a readable, separated process name!
 
 # Features
 
-  - When adding a script, you can choose between using the standard, full-featured DLL, and the mini version
-  - You can reload each script individually or all at once
-  - Drag and drop scripts to add multiple files at once
-  - When it starts up, all scripts in the list immediately run
-  - When a file is added, it immediately runs
-  - When a file is removed, it immediately stops the script
-  - As a setting, it can start up at user login
+  - When adding a script, you can choose between using the standard, full-featured DLL, and the mini version.
+  - You can reload each script individually or all at once.
+  - Drag and drop scripts to add multiple files at once.
+  - When it starts up, all scripts in the list immediately run.
+  - When a file is added, it immediately runs.
+  - When a file is removed, it immediately stops the script.
+  - As a setting, it can start up at user login.
 
 # Limitations and other notes
 
-  - The "Add script" button only allows for adding one script at a time
-  - Scripts must be compliant with AutoHotkey_H (usually no or very few issues if it was written for AHK v1.1)
-  - If you have "Start on User Login" active and move ScriptUp, it will automatically fix the registry entry (restart ScriptUp from the new path to do so)
-  - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp
+  - The "Add script" button only allows for adding one script at a time.
+  - Scripts must be compliant with AutoHotkey_H (usually no or very few issues if it was written for AHK v1.1).
+  - If you have "Start on User Login" active and move ScriptUp, it will automatically fix the registry entry (restart ScriptUp from the new path to do so).
+  - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp.
 
 # Dependencies
   - [AutoHotkey_H v1](https://hotkeyit.github.io/v2/) - The DLL's are required for actually running the scripts. Be sure to use the correct bit-length (must be the same as ScriptUp) as you can't mismatch DLL's and EXE's, eg., 32-bit or 64-bit DLL if ScriptUp is running under 32-bit or 64-bit, respectively.
