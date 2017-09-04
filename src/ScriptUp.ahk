@@ -2,6 +2,7 @@
 #persistent
 #noEnv
 #include <threadMan>
+menu,tray,tip,ScriptUp
 
 ; setup config
 sini:=(siniD:=a_appData . "\..\Local\ScriptUp") . "\config.ini"
