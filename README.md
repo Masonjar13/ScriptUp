@@ -1,6 +1,6 @@
 # ScriptUp
 
-[AutoHotkey Forum Thread]()
+[AutoHotkey Forum Thread](https://autohotkey.com/boards/viewtopic.php?f=6&t=36656)
 
 Are you tired of having to see tons of AHK scripts running in the processes list? I was. So, I made this: ScriptUp!
 
@@ -27,7 +27,10 @@ Easily add as many AHK scripts as you'd like, from any folder on your PC and Scr
 
 # Dependencies
   - [AutoHotkey_H v1](https://hotkeyit.github.io/v2/) - The DLL's are required for actually running the scripts. Be sure to use the correct bit-length (must be the same as ScriptUp) as you can't mismatch DLL's and EXE's, eg., 32-bit or 64-bit DLL if ScriptUp is running under 32-bit or 64-bit, respectively.
-  - [threadMan](../../AHK-Library/blob/master/Lib/threadMan.ahk)
+  - [threadMan](https://github.com/Masonjar13/AHK-Library/blob/master/Lib/threadMan.ahk)
+    - [readResource](https://github.com/Masonjar13/AHK-Library/blob/master/Required-Libraries/readResource.ahk) (Not made by me, but I don't recall the thread I got it from, apologies.)
+    - [_MemoryLibrary](https://github.com/Masonjar13/AHK-Library/blob/master/Required-Libraries/_MemoryLibrary.ahk) [by Hotkeyit](https://autohotkey.com/board/topic/77302-class-ahk-lv2-memorylibrary/)
+      - [_Struct](https://github.com/Masonjar13/AHK-Library/blob/master/Required-Libraries/_Struct.ahk) [by Hotkeyit](https://autohotkey.com/board/topic/55150-class-structfunc-sizeof-updated-010412-ahkv2/)
 
 # Contribution
 If you'd like to contribute, fork, or make any personal edits, feel free to add your own name and link to the "About" section. Search for `gui: about` to add your name in, format it as you'd like, and give it `gaboutLink` (if you're adding a link). Then search for the label, `aboutLink:`, and add a new ternary expression.
