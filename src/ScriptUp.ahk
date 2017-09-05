@@ -1,4 +1,4 @@
-#singleInstance force
+﻿#singleInstance force
 #persistent
 #noEnv
 #include <threadMan>
@@ -7,7 +7,7 @@ menu,tray,tip,ScriptUp
 ; setup config
 sini:=(siniD:=a_appData . "\..\Local\ScriptUp") . "\config.ini"
 lvw:=400
-lvr:=30
+;lvr:=20
 lvo:=" -LV0x10 -multi +sort"
 lvHdr2w:=100
 lvHdr1w:=lvw-lvHdr2w
@@ -27,12 +27,14 @@ regRead,loginRun,% regStartupPath:="HKCU\Software\Microsoft\Windows\CurrentVersi
 if(!errorLevel) ; auto-correct if the script has been moved
     if(loginRun!=a_scriptFullPath)
         regWrite,REG_SZ,% regStartupPath,ScriptUp,% a_scriptFullPath
+iniRead,guiLastHeight,% sini,settings,guiLastHeight,500
 
 ; gui: main
 gui,main:default
-gui,+hwndghwnd
+gui,margin,13,15
+gui,% "+hwndghwnd +minSize" . lvw+30 . "x420 +maxSize" . lvw+30 . "x +resize"
 gui,font,s11,courier new
-gui,add,listview,% "w" . lvw+4 . " r" . lvr . " altsubmit glvCallback" . lvo,Script Name|DLL Type
+gui,add,listview,% "w" . lvw+4 . " r10 altsubmit glvCallback vscriptLV" . lvo,Script Name|DLL Type
 lv_modifyCol(1,lvHdr1w)
 lv_modifyCol(2,lvHdr2w)
 sList.genList()
@@ -40,6 +42,8 @@ gui,font,,arial
 gui,add,button,gaddScript section,Add script
 gui,add,button,greloadScript ys,Reload script
 gui,add,button,gremoveScript ys,Remove script
+gui,show,hide ; set GUI form
+gui,show,% "h" . guiLastHeight " w" . lvw+30 . " hide" ; set last size
 
 ; gui: addScript
 gui,addScript:+ownermain +hwndghwnd2
@@ -243,6 +247,15 @@ loop,parse,a_guiEvent,`n
 }
 return
 
+mainGuiSize:
+gui,main:default
+if(a_eventInfo=1)
+    return
+AutoXYWH("h","scriptLV")
+AutoXYWH("y","Add script","Reload script","Remove script")
+iniWrite,% a_guiHeight,% sini,settings,guiLastHeight
+return
+
 mainGuiClose:
 gui,main:cancel
 return
@@ -270,6 +283,29 @@ getFileext(path){
     splitPath,path,,,ext
     return ext
 }    
+
+AutoXYWH(DimSize, cList*){       ; http://ahkscript.org/boards/viewtopic.php?t=1079
+  static cInfo := {}
+ 
+  If (DimSize = "reset")
+    Return cInfo := {}
+ 
+  For i, ctrl in cList {
+    ctrlID := A_Gui ":" ctrl
+    If ( cInfo[ctrlID].x = "" ){
+        GuiControlGet, i, %A_Gui%:Pos, %ctrl%
+        MMD := InStr(DimSize, "*") ? "MoveDraw" : "Move"
+        fx := fy := fw := fh := 0
+        For i, dim in (a := StrSplit(RegExReplace(DimSize, "i)[^xywh]")))
+            If !RegExMatch(DimSize, "i)" dim "\s*\K[\d.-]+", f%dim%)
+              f%dim% := 1
+        cInfo[ctrlID] := { x:ix, fx:fx, y:iy, fy:fy, w:iw, fw:fw, h:ih, fh:fh, gw:A_GuiWidth, gh:A_GuiHeight, a:a , m:MMD}
+    }Else If ( cInfo[ctrlID].a.1) {
+        dgx := dgw := A_GuiWidth  - cInfo[ctrlID].gw  , dgy := dgh := A_GuiHeight - cInfo[ctrlID].gh
+        For i, dim in cInfo[ctrlID]["a"]
+            Options .= dim (dg%dim% * cInfo[ctrlID]["f" dim] + cInfo[ctrlID][dim]) A_Space
+        GuiControl, % A_Gui ":" cInfo[ctrlID].m , % ctrl, % Options
+} } }
 
 ; class
 class fileList {
