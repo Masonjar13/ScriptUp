@@ -1,4 +1,4 @@
-﻿#singleInstance force
+#singleInstance force
 #persistent
 #noEnv
 #include <threadMan>
@@ -7,7 +7,6 @@ menu,tray,tip,ScriptUp
 ; setup config
 sini:=(siniD:=a_appData . "\..\Local\ScriptUp") . "\config.ini"
 lvw:=400
-;lvr:=20
 lvo:=" -LV0x10 -multi +sort"
 lvHdr2w:=100
 lvHdr1w:=lvw-lvHdr2w
@@ -34,7 +33,7 @@ gui,main:default
 gui,margin,13,15
 gui,% "+hwndghwnd +minSize" . lvw+30 . "x420 +maxSize" . lvw+30 . "x +resize"
 gui,font,s11,courier new
-gui,add,listview,% "w" . lvw+4 . " r10 altsubmit glvCallback vscriptLV" . lvo,Script Name|DLL Type
+gui,add,listview,% "w" . lvw+4 . " r20 altsubmit glvCallback vscriptLV" . lvo,Script Name|DLL Type
 lv_modifyCol(1,lvHdr1w)
 lv_modifyCol(2,lvHdr2w)
 sList.genList()
