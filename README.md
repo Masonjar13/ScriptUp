@@ -24,6 +24,7 @@ Easily add as many AHK scripts as you'd like, from any folder on your PC, and Sc
   - Scripts must be compliant with AutoHotkey_H (usually no or very few issues if it was written for AHK v1.1).
   - If you have "Start on User Login" active and move ScriptUp, it will automatically fix the registry entry (restart ScriptUp from the new path to do so).
   - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp.
+  - If using an onExit sub/function in one of the added scripts, it must not exceed 30s of process time. If something requires more than that amount of time, set `quitTimeout` at `Lib\fileList.ahk:2`.
 
 # Dependencies
   - [AutoHotkey_H v1](https://hotkeyit.github.io/v2/) - The DLL's are required for actually running the scripts. Be sure to use the correct bit-length (must be the same as ScriptUp) as you can't mismatch DLL's and EXE's, eg., 32-bit or 64-bit DLL if ScriptUp is running under 32-bit or 64-bit, respectively.
