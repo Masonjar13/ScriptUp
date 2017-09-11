@@ -101,7 +101,8 @@
     }
     
     close(scriptName){
-        this.scripts[scriptName].thread:=""
+        try
+            this.scripts[scriptName].thread:=""
     }
     
     loadDlls(){
