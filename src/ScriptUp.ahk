@@ -1,7 +1,8 @@
-#singleInstance force
+﻿#singleInstance force
 #persistent
 #noEnv
 #include <threadMan>
+#include <fileList>
 menu,tray,tip,ScriptUp
 
 ; setup config
@@ -68,7 +69,7 @@ gui,about:add,button,xm gaboutGuiClose w40,Ok
 ; menu: main
 menu,actions,add,Reload all Scripts,reloadScripts
 menu,actions,add,Refresh list,refreshList
-menu,settings,add,Disable file delete warning,deleteWarning,+radio
+menu,settings,add,Disable file remove warning,deleteWarning,+radio
 menu,settings,add,Start on User Login,logonRun,+radio
 menu,settings,add,Set DLL: Std,setDll
 menu,settings,add,Set DLL: Mini,setDll
@@ -86,7 +87,7 @@ menu,tray,add,Exit,cleanup
 
 ; menu settings
 if(hideDeleteWarning)
-    menu,settings,check,Disable file delete warning
+    menu,settings,check,Disable file remove warning
 if(loginRun)
     menu,settings,check,Start on User Login
 
@@ -170,7 +171,7 @@ sList.genList()
 return
 
 deleteWarning:
-menu,settings,toggleCheck,Disable file delete warning
+menu,settings,toggleCheck,Disable file remove warning
 if(!settingsHwnd)
     settingsHwnd:=dllCall("GetSubMenu","UInt",dllCall("GetMenu","UInt",ghwnd),"Int",1)
 sendMessage,0x116,settingsHwnd,0,,% "ahk_id " . ghwnd
@@ -215,6 +216,7 @@ return
 
 about:
 gui,about:show,,About
+gui,main:+disabled
 return
 
 aboutLink:
@@ -270,157 +272,8 @@ gui,main:-disabled
 return
 
 cleanup:
+gui,addScript:cancel
+gui,about:cancel
+gui,main:cancel
+sList.closeAll()
 exitApp
-
-; functions
-getFilename(path){
-    splitPath,path,,,,fname
-    return fname
-}
-
-getFileext(path){
-    splitPath,path,,,ext
-    return ext
-}    
-
-AutoXYWH(DimSize, cList*){       ; http://ahkscript.org/boards/viewtopic.php?t=1079
-  static cInfo := {}
- 
-  If (DimSize = "reset")
-    Return cInfo := {}
- 
-  For i, ctrl in cList {
-    ctrlID := A_Gui ":" ctrl
-    If ( cInfo[ctrlID].x = "" ){
-        GuiControlGet, i, %A_Gui%:Pos, %ctrl%
-        MMD := InStr(DimSize, "*") ? "MoveDraw" : "Move"
-        fx := fy := fw := fh := 0
-        For i, dim in (a := StrSplit(RegExReplace(DimSize, "i)[^xywh]")))
-            If !RegExMatch(DimSize, "i)" dim "\s*\K[\d.-]+", f%dim%)
-              f%dim% := 1
-        cInfo[ctrlID] := { x:ix, fx:fx, y:iy, fy:fy, w:iw, fw:fw, h:ih, fh:fh, gw:A_GuiWidth, gh:A_GuiHeight, a:a , m:MMD}
-    }Else If ( cInfo[ctrlID].a.1) {
-        dgx := dgw := A_GuiWidth  - cInfo[ctrlID].gw  , dgy := dgh := A_GuiHeight - cInfo[ctrlID].gh
-        For i, dim in cInfo[ctrlID]["a"]
-            Options .= dim (dg%dim% * cInfo[ctrlID]["f" dim] + cInfo[ctrlID][dim]) A_Space
-        GuiControl, % A_Gui ":" cInfo[ctrlID].m , % ctrl, % Options
-} } }
-
-; class
-class fileList {
-    scripts:=[]
-    
-    __new(sini){
-        this.sini:=sini
-        this.loadDlls()
-    }
-    
-    __delete(){
-        for i,a in this.scripts {
-            a.thread:=""
-        }
-    }
-    
-    genList(){
-        iniRead,allScripts,% this.sini,scripts
-        loop,parse,allScripts,`n
-        {
-            regExMatch(a_loopField,"O)([^=]+)=([^?]+)\?([a-zA-Z0-9]+)",t)
-            tn:={name: t.1,path: t.2,dll: t.3}
-            for i,a in this.scripts {
-                if(a.name=t.1){
-                    ctn:=1
-                    break
-                }
-            }
-            if(!ctn)
-                this.scripts[t[1]]:=tn
-
-            if(!lv_modify(a_index,,t.1,t.3))
-                lv_add(,t.1,t.3)
-        }
-        lv_modifyCol(1,"sort")
-    }
-    
-    runAll(reload:=0){
-        for i,a in this.scripts {
-            if(reload)
-                err:=this.reload(a.name)
-            else
-                err:=this.run(a.name)
-            
-            ; error checking
-            if(err){
-                if(err=-1){
-                    if(err1){
-                        if(!inStr(err1,a.dll))
-                            err1.=", " . a.dll
-                    }else
-                        err1:=a.dll
-                }
-                else if(err=-2){
-                    if(err2){
-                        if(!inStr(err2,a.dll))
-                            err2.=", " . a.dll . " (" . this.getDll(a.dll) . ")"
-                    }else
-                        err2:=a.dll . " (" . this.getDll(a.dll) . ")"
-                }else if(err=-3)
-                    err3:=(err3?err3 . ", ":"") . a.name . " (" . a.path . ")"
-            }
-        }
-        
-        ; report errors
-        if(err1||err2||err3)
-            msgbox,,Error,% "There were errors while trying to run scripts:`n`n    "
-                . (err1?"DLL path not specified: " . err1 . "`n`n    ":"")
-                . (err2?"DLL not found at path: " . err2 . "`n`n     ":"")
-                . (err3?"File path invalid: " . err3 . "`n`n    ":"")
-    }
-    
-    reloadAll(){
-        this.runAll(1)
-    }
-    
-    reload(scriptName){
-        this.close(scriptName)
-        return this.run(scriptName)
-    }
-    
-    run(scriptName){
-        dllPath:=this.getDll(this.scripts[scriptName].dll)
-        
-        ; error checking
-        if(!dllPath)
-            return -1
-        else if(!fileExist(dllPath))
-            return -2
-        else if(!fileExist(this.scripts[scriptName].path))
-            return -3
-        
-        this.scripts[scriptName].thread:=new threadMan(dllPath)
-        this.scripts[scriptName].thread.newFromFile(this.scripts[scriptName].path)
-    }
-    
-    close(scriptName){
-        this.scripts[scriptName].thread:=""
-    }
-    
-    loadDlls(){
-        iniRead,dlltypes,% this.sini,dllTypes
-        loop,parse,dlltypes,`n
-        {
-            regExMatch(a_loopField,"O)([^=]+)=([^$]+)",t)
-            this.dllTypes[t[1]]:=t.2
-        }
-    }
-    
-    setDll(dllType,path){
-        this.dllTypes[dllType]:=path
-        iniWrite,% path,% this.sini,dlltypes,% dllType
-    }
-    
-    getDll(dllType){
-        return this.dllTypes[dllType]
-    }
-    
-}
