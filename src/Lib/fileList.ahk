@@ -17,6 +17,7 @@
         iniRead,allScripts,% this.sini,scripts
         loop,parse,allScripts,`n
         {
+            ctn:=0
             regExMatch(a_loopField,"O)([^=]+)=([^?]+)\?([a-zA-Z0-9]+)",t)
             tn:={name: t.1,path: t.2,dll: t.3}
             for i,a in this.scripts {
@@ -82,6 +83,13 @@
     reload(scriptName){
         this.close(scriptName)
         return this.run(scriptName)
+    }
+    
+    listlines(scriptName){
+        if(this.scripts[scriptName].dll="Mini")
+            msgbox,,Limitation Error,Mini DLL doesn't support ListLines.
+        else
+            this.scripts[scriptName].thread.exec("ListLines")
     }
     
     run(scriptName){
