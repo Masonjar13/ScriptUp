@@ -29,8 +29,8 @@
             if(!ctn)
                 this.scripts[t[1]]:=tn
 
-            if(!lv_modify(a_index,,t.1,t.3))
-                lv_add(,t.1,t.3)
+            if(!lv_modify(a_index,,t.1,,t.3))
+                lv_add(,t.1,,t.3)
         }
         lv_modifyCol(1,"sort")
     }
@@ -92,6 +92,30 @@
             this.scripts[scriptName].thread.exec("ListLines")
     }
     
+    pause(scriptName){
+        return this.scripts[scriptName].thread.pause()
+    }
+    
+    suspend(scriptName){
+        if(this.scripts[scriptName].dll="Mini")
+            msgbox,,Limitation Error,Mini DLL doesn't support hotkeys.
+        else
+            this.scripts[scriptName].thread.exec("Suspend")
+    }
+    
+    getStateAll(){
+        for i,a in this.scripts{
+            lv_getText(pstate,a_index,2)
+            state:=this.getState(a.name)
+            if(state!=pstate)
+                lv_modify(a_index,,,state)
+        }
+    }
+    
+    getState(scriptName){
+        return this.scripts[scriptName].thread.state()
+    }
+    
     run(scriptName){
         dllPath:=this.getDll(this.scripts[scriptName].dll)
         
@@ -111,6 +135,11 @@
     close(scriptName){
         try
             this.scripts[scriptName].thread:=""
+    }
+    
+    remove(scriptName){
+        this.close(scriptName)
+        this.scripts.delete(scriptName)
     }
     
     loadDlls(){

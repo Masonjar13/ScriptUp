@@ -3,9 +3,10 @@ gui,main:default
 gui,margin,13,15
 gui,% "+hwndghwnd +minSize" . lvw+30 . "x420 +maxSize" . lvw+30 . "x +resize"
 gui,font,s11,courier new
-gui,add,listview,% "w" . lvw+4 . " r20 altsubmit glvCallback vscriptLV" . lvo,Script Name|DLL Type
+gui,add,listview,% "w" . lvw+4 . " r20 altsubmit glvCallback vscriptLV" . lvo,Script Name|State|DLL Type
 lv_modifyCol(1,lvHdr1w)
 lv_modifyCol(2,lvHdr2w)
+lv_modifyCol(3,lvHdr3w)
 sList.genList()
 gui,font,,arial
 ;gui,add,button,gaddScript section,Add script
@@ -49,14 +50,15 @@ menu,main,add,About,about
 gui,menu,main
 
 ; menu: tray
-menu,tray,nostandard
+if(!debug)
+    menu,tray,nostandard
 menu,tray,add,Open GUI,showMain
 menu,tray,default,Open GUI
 menu,tray,add,Exit,cleanup
 
 ; menu: LV context
 menu,cmain,add,Reload,reloadScript
-;menu,cmain,add,Pause,pauseScript
-;menu,cmain,add,Suspend,suspendScript
+menu,cmain,add,Pause,pauseScript
+menu,cmain,add,Suspend,suspendScript
 menu,cmain,add,Open ListLines,listlinesScript
 menu,cmain,add,Remove,removeScript

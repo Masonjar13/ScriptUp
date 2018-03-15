@@ -6,11 +6,14 @@
 menu,tray,tip,ScriptUp
 
 ; setup config
+debug:=0
 sini:=(siniD:=a_appData . "\..\Local\ScriptUp") . "\config.ini"
-lvw:=400
+lvw:=500
 lvo:=" -LV0x10 -multi +sort"
+lvHdr3w:=100
 lvHdr2w:=100
-lvHdr1w:=lvw-lvHdr2w
+lvHdr1w:=lvw-lvHdr2w-lvHdr3w
+stateUpInt:=1000
 
 if(!fileExist(siniD)){
     firstRun:=1
@@ -19,6 +22,7 @@ if(!fileExist(siniD)){
     sList:=new fileList(sini)
 
 onExit,cleanup
+onMessage(0x46,"isMoving")
 
 ; load settings
 fileLastDir:=a_scriptFullPath
@@ -39,6 +43,9 @@ if(loginRun)
 
 ; start scripts
 sList.runAll()
+
+; state checker
+setTimer,checkStates,% stateUpInt
 
 ; open menu automatically for first run
 if(firstRun)
@@ -92,12 +99,26 @@ lv_getText(listlinesScript,selectedRow)
 sList.listlines(listlinesScript)
 return
 
+pauseScript:
+gui,main:default
+lv_getText(pauseScript,selectedRow)
+sList.pause(pauseScript)
+return
+
+suspendScript:
+gui,main:default
+lv_getText(suspendScript,selectedRow)
+sList.suspend(suspendScript)
+return
+
 removeScript:
 if(!selectedRow){
     if(!hideDeleteWarning)
         msgbox,,Make a selection,No file was selected.
     return
 }
+gui,main:default
+lv_getText(delKey,selectedRow)
 if(hideDeleteWarning)
     goto removeScriptFinal
 msgbox,4,Confirm,Are you sure you want to remove this script? This will not delete the actual script.
@@ -107,8 +128,7 @@ return
 
 removeScriptFinal:
 gui,main:default
-lv_getText(delKey,selectedRow)
-sList.close(delKey)
+sList.remove(delKey)
 iniDelete,% sini,scripts,% delKey
 lv_delete()
 gosub refreshList
@@ -121,6 +141,11 @@ return
 refreshList:
 gui,main:default
 sList.genList()
+return
+
+checkStates:
+gui,main:default
+sList.getStateAll()
 return
 
 deleteWarning:
@@ -191,3 +216,9 @@ gui,main:show,,ScriptUp
 return
 
 #include <guiSubs>
+
+isMoving(wparam,lparam,msg,hwnd){
+    global stateUpInt,ghwnd
+    if(hwnd=ghwnd)
+        setTimer,checkStates,% getKeyState("LButton","P")?"Off":stateUpInt
+}
