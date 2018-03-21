@@ -85,12 +85,14 @@ iniWrite,% newScript . "?" . dllType,% sini,scripts,% getFilename(newScript)
 lv_delete()
 gosub refreshList
 sList.run(getFilename(newScript))
+gosub checkStates
 return
 
 reloadScript:
 gui,main:default
 lv_getText(reloadScript,selectedRow)
 sList.reload(reloadScript)
+gosub checkStates
 return
 
 listlinesScript:
@@ -103,12 +105,14 @@ pauseScript:
 gui,main:default
 lv_getText(pauseScript,selectedRow)
 sList.pause(pauseScript)
+gosub checkStates
 return
 
 suspendScript:
 gui,main:default
 lv_getText(suspendScript,selectedRow)
 sList.suspend(suspendScript)
+gosub checkStates
 return
 
 removeScript:
@@ -136,11 +140,13 @@ return
 
 reloadScripts:
 sList.reloadAll()
+gosub checkStates
 return
 
 refreshList:
 gui,main:default
 sList.genList()
+gosub checkStates
 return
 
 checkStates:
