@@ -96,11 +96,22 @@
         return this.scripts[scriptName].thread.pause()
     }
     
-    suspend(scriptName){
+    suspend(scriptName){ ; Helgef - https://autohotkey.com/boards/viewtopic.php?p=207480#p207480
+        static WM_COMMAND := 0x111
+        static ID_FILE_SUSPEND := 65404
+        local dhwLast
+
         if(this.scripts[scriptName].dll="Mini")
             msgbox,,Limitation Error,Mini DLL doesn't support hotkeys.
-        else
-            this.scripts[scriptName].thread.exec("Suspend")
+        else{
+            if(a_detectHiddenWindows="Off"){
+                dhwLast:=a_detectHiddenWindows
+                detectHiddenWindows,on
+            }
+            postMessage,WM_COMMAND,ID_FILE_SUSPEND,,,% "ahk_id " this.scripts[scriptName].thread.varGet("a_scripthwnd")
+            if(dhwLast)
+                detectHiddenWindows,% dhwLast
+        }
     }
     
     getStateAll(){
