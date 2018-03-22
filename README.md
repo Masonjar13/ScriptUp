@@ -13,7 +13,7 @@ Easily add as many AHK scripts as you'd like, from any folder on your PC, and Sc
 
   - When adding a script, you can choose between using the standard, full-featured DLL, and the mini version.
   - You can reload each script individually or all at once.
-  - Drag and drop scripts to add multiple files at once.
+  - Drag and drop files to add multiple scripts at once.
   - When it starts up, all scripts in the list immediately run.
   - When a file is added, it immediately runs.
   - When a file is removed, it immediately stops the script.
@@ -25,7 +25,7 @@ Easily add as many AHK scripts as you'd like, from any folder on your PC, and Sc
 
   - Scripts must be compliant with AutoHotkey_H (usually no or very few issues if it was written for AHK v1.1).
   - If you have "Start on User Login" active and move ScriptUp, it will automatically fix the registry entry (restart ScriptUp from the new path to do so).
-  - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp.
+  - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp to allow access to the [Standard Library](https://autohotkey.com/docs/Functions.htm#lib).
   - If using an onExit sub/function in one of the added scripts, it must not exceed 30s of process time. If something requires more than that amount of time, set `quitTimeout` at `Lib\fileList.ahk:2`.
 
 # Dependencies (included)
