@@ -1,8 +1,8 @@
 ﻿class fileList {
-    quitTimeout:=30000
-    scripts:=[]
     
     __new(sini){
+        this.quitTimeout:=30000
+        this.scripts:=[]
         this.sini:=sini
         this.loadDlls()
     }
@@ -75,9 +75,17 @@
     }
     
     closeAll(){
+        global debug
         for i,a in this.scripts {
+            if(debug)
+                tooltip,% "Closing " . a.name
             this.close(a.name)
         }
+        toolTip
+    }
+    
+    exec(scriptName,code){
+        this.scripts[scriptName].thread.exec(code)
     }
     
     reload(scriptName){
@@ -89,7 +97,8 @@
         if(this.scripts[scriptName].dll="Mini")
             msgbox,,Limitation Error,Mini DLL doesn't support ListLines.
         else
-            this.scripts[scriptName].thread.exec("ListLines")
+            this.exec(scriptName,"ListLines")
+            ;this.scripts[scriptName].thread.exec("ListLines")
     }
     
     pause(scriptName){

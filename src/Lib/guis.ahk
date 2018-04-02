@@ -23,7 +23,7 @@ gui,addScript:add,ddl,w50 vdllType ys,Std||Mini
 gui,addScript:add,button,gaddScriptFinal xm,Add
 
 ; gui: about
-gui,about:+ownermain
+gui,about:+ownermain +hwndghwnd3
 gui,about:font,s12,arial
 gui,about:add,text,section,Written by
 gui,about:font,cBlue underline
@@ -35,6 +35,14 @@ gui,about:add,text,ys,% ".   "
 gui,about:margin,15,9
 gui,about:font,s9 cBlack
 gui,about:add,button,xm gaboutGuiClose w40,Ok
+
+; gui: execCode
+gui,execCode:+ownermain +hwndghwnd4
+gui,execCode:font,,courier new
+gui,execCode:add,edit,vexecCodeCode w500 r10
+gui,execCode:font,s12,arial
+gui,execCode:add,button,gexecScriptCode w500,Execute Code
+;gui,execCode:
 
 ; menu: main
 menu,actions,add,Reload all Scripts,reloadScripts
@@ -62,3 +70,4 @@ menu,cmain,add,Pause,pauseScript
 menu,cmain,add,Suspend,suspendScript
 menu,cmain,add,Open ListLines,listlinesScript
 menu,cmain,add,Remove,removeScript
+menu,cmain,add,Execute Code,execScript

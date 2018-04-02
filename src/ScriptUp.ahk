@@ -6,7 +6,7 @@
 menu,tray,tip,ScriptUp
 
 ; setup config
-debug:=0
+debug:=1
 sini:=(siniD:=a_appData . "\..\Local\ScriptUp") . "\config.ini"
 lvw:=500
 lvo:=" -LV0x10 -multi +sort"
@@ -138,6 +138,20 @@ lv_delete()
 gosub refreshList
 return
 
+execScript:
+gui,main:default
+lv_getText(execScript,selectedRow)
+gui,execCode:default
+guiControl,,execCodeCode,
+gui,show,,% "Execute code on thread: " . execScript
+return
+
+execScriptCode:
+gui,execCode:default
+gui,submit,nohide
+sList.exec(execScript,execCodeCode)
+return
+
 reloadScripts:
 sList.reloadAll()
 gosub checkStates
@@ -225,6 +239,6 @@ return
 
 isMoving(wparam,lparam,msg,hwnd){
     global stateUpInt,ghwnd
-    if(hwnd=ghwnd)
+    if(hwnd=ghwnd || hwnd=ghwnd2 || hwnd=ghwnd3 || hwnd=ghwnd4)
         setTimer,checkStates,% getKeyState("LButton","P")?"Off":stateUpInt
 }
