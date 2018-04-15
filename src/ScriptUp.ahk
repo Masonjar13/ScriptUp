@@ -18,8 +18,8 @@ stateUpInt:=1000
 if(!fileExist(siniD)){
     firstRun:=1
     fileCreateDir,% siniD
-}else
-    sList:=new fileList(sini)
+}
+sList:=new fileList(sini)
 
 onExit,cleanup
 onMessage(0x46,"isMoving")
