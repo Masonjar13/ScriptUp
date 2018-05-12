@@ -101,6 +101,17 @@ lv_getText(listlinesScript,selectedRow)
 sList.listlines(listlinesScript)
 return
 
+editScript:
+gui,main:default
+lv_getText(editScript,selectedRow)
+for i,a in sList.scripts{
+    if(a.name=editScript){
+        run,% "edit """ . a.path . """"
+        break
+    }
+}
+return
+
 pauseScript:
 gui,main:default
 lv_getText(pauseScript,selectedRow)
@@ -208,7 +219,6 @@ splitPath,nDllPath,,fileLastDir
 
 ; std or mini
 nDllType:=inStr(a_thisMenuItem,"Std")?"Std":"Mini"
-
 sList.setDll(nDllType,nDllPath)
 return
 

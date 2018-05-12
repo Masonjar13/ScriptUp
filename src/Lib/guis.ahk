@@ -69,5 +69,6 @@ menu,cmain,add,Reload,reloadScript
 menu,cmain,add,Pause,pauseScript
 menu,cmain,add,Suspend,suspendScript
 menu,cmain,add,Open ListLines,listlinesScript
+menu,cmain,add,Edit,editScript
 menu,cmain,add,Remove,removeScript
 menu,cmain,add,Execute Code,execScript
