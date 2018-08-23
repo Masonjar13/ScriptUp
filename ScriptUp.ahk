@@ -1,29 +1,31 @@
 ﻿#singleInstance force
 #persistent
 #noEnv
-#include <threadMan>
+setWorkingDir,% a_scriptDir
+#include data\threadMan.ahk
 menu,tray,tip,ScriptUp
 
 ; compiled installs
 if(a_isCompiled){
-    fileInstall,Lib\dlls\mini32.dll,Lib\dlls\mini32.dll
-    fileInstall,Lib\dlls\mini64.dll,Lib\dlls\mini64.dll
-    fileInstall,Lib\dlls\std32.dll,Lib\dlls\std32.dll
-    fileInstall,Lib\dlls\std64.dll,Lib\dlls\std64.dll
-    fileInstall,Lib\imgs\b1.png,Lib\imgs\b1.png
-    fileInstall,Lib\imgs\b2.png,Lib\imgs\b2.png
-    fileInstall,Lib\imgs\MXIII.png,Lib\imgs\MXIII.png
-    fileInstall,Lib\workerH.ahk,Lib\workerH.ahk
+    fileCreateDir,data\dlls
+    fileCreateDir,data\imgs
+    fileInstall,data\dlls\mini32.dll,data\dlls\mini32.dll
+    fileInstall,data\dlls\mini64.dll,data\dlls\mini64.dll
+    fileInstall,data\dlls\std32.dll,data\dlls\std32.dll
+    fileInstall,data\dlls\std64.dll,data\dlls\std64.dll
+    fileInstall,data\imgs\b1.png,data\imgs\b1.png
+    fileInstall,data\imgs\b2.png,data\imgs\b2.png
+    fileInstall,data\imgs\MXIII.png,data\imgs\MXIII.png
+    fileInstall,data\workerH.ahk,data\workerH.ahk
 }
 
 ; setup config
 ;sini:=(siniD:=a_appData . "\..\Local\ScriptUp") . "\config.ini"
-setWorkingDir,% a_scriptDir
-sini:=a_scriptDir . "\Lib\config.ini"
-dlls:=a_scriptDir . "\Lib\dlls"
-imgs:=a_scriptDir . "\Lib\imgs"
+sini:=a_scriptDir . "\data\config.ini"
+dlls:=a_scriptDir . "\data\dlls"
+imgs:=a_scriptDir . "\data\imgs"
 workerdll:=dlls . "\std" . (a_ptrSize*8) . ".dll"
-workerfile:=a_scriptDir . "\Lib\workerH.ahk"
+workerfile:=a_scriptDir . "\data\workerH.ahk"
 fileLastDir:=a_scriptDir
 if(!fileExist(sini))
     firstRun:=1
@@ -36,7 +38,7 @@ if(!errorLevel) ; auto-correct if the script has been moved
         regWrite,REG_SZ,% regStartupPath,ScriptUp,% a_scriptFullPath
 
 ; start worker
-#include <guiMake>
+#include data\guiMake.ahk
 worker:=new threadMan(workerdll)
 worker.newFromFile(workerfile)
 onExit,cleanup
@@ -52,9 +54,10 @@ if(firstRun){
 setTimer,checkStates,1000
 return
 
-#include <guiSubs>
-#include <optionSubs>
-#include <menuSubs>
+#include data\guiSubs.ahk
+#include data\optionSubs.ahk
+#include data\menuSubs.ahk
+#include data\functions.ahk
 
 checkStates:
 stateList:=worker.varGet("stateList")

@@ -13,3 +13,11 @@ hideFocusBorder(wParam,lParam:="",msg:="",handle:=""){ ; by 'just me'
     }else if(dllCall("IsWindow","ptr",wParam,"uint"))
         dllCall("user32\PostMessage","ptr",wParam,"uint",WM_UPDATEUISTATE,"ptr",SET_HIDEFOCUS,"ptr",0)
 }
+getFilename(path){
+    splitPath,path,,,,fname
+    return fname
+}
+getFileext(path){
+    splitPath,path,,,ext
+    return ext
+}
