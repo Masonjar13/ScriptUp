@@ -5,7 +5,7 @@ Latest tested working version: AHK_L v1.1.28.0, DLL: 1.1.28.00-H008
 
 Are you tired of having to see tons of AHK scripts running in the processes list? I was. So, I made this: ScriptUp!
 
-![ScriptUp](https://i.imgur.com/g8X8uFw.png)
+![ScriptUp](https://i.imgur.com/8xRso8M.png)
 
 Easily add as many AHK scripts as you'd like, from any folder on your PC, and ScriptUp will house them all under its own process name. You can even compile it to have it run under a readable, separated process name!
 
@@ -26,17 +26,19 @@ Easily add as many AHK scripts as you'd like, from any folder on your PC, and Sc
   - Scripts must be compliant with AutoHotkey_H (usually no or very few issues if it was written for AHK v1.1).
   - If you have "Start on User Login" active and move ScriptUp, it will automatically fix the registry entry (restart ScriptUp from the new path to do so).
   - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp to allow access to the [Standard Library](https://autohotkey.com/docs/Functions.htm#lib).
-  - If using an onExit sub/function in one of the added scripts, it must not exceed 30s of process time. If something requires more than that amount of time, set `quitTimeout` at `Lib\fileList.ahk:2`.
+  - If using an onExit sub/function in one of the added scripts, it must not exceed 30s of process time. If something requires more than that amount of time, [set the value here](ScriptUp.ahk#L70).
+  - Do NOT use any variation of #If except for #If. #IfWinActive, #IfWinExist, etc., will make the thread crash on exit. This is due to deprication in __H.
+  - SetWorkingDir will be overridden. They will take on the working directory of the worker script, which is in the library. Full paths will need to be used in scripts.
+  - With the release of v1, paths to scripts/DLLs may be relative to workerH. You can modify the path while adding a new script or change it in Lib\config.ini.
 
 # Dependencies (included)
-  - [AutoHotkey_H v1](https://hotkeyit.github.io/v2/) - The DLL's are required for actually running the scripts. Be sure to use the correct bit-length (must be the same as ScriptUp) as you can't mismatch DLL's and EXE's, eg., 32-bit or 64-bit DLL if ScriptUp is running under 32-bit or 64-bit, respectively.
+  - [AutoHotkey_H v1](https://hotkeyit.github.io/v2/) - The DLL's are required for running the worker as well as the scripts. It will auto-set them initially to the included DLLs, but you can change them from the options tab.
   - [threadMan](https://github.com/Masonjar13/AHK-Library/blob/master/Lib/threadMan.ahk)
-    - [readResource](https://github.com/Masonjar13/AHK-Library/blob/master/Required-Libraries/readResource.ahk) (Not made by me, but I don't recall the thread I got it from, apologies.)
     - [_MemoryLibrary](https://github.com/Masonjar13/AHK-Library/blob/master/Required-Libraries/_MemoryLibrary.ahk) [by Hotkeyit](https://autohotkey.com/board/topic/77302-class-ahk-lv2-memorylibrary/)
       - [_Struct](https://github.com/Masonjar13/AHK-Library/blob/master/Required-Libraries/_Struct.ahk) [by Hotkeyit](https://autohotkey.com/board/topic/55150-class-structfunc-sizeof-updated-010412-ahkv2/)
 
 # Contribution
-If you'd like to contribute, fork, or make any personal edits, feel free to add your own name and link to the "About" section. Search for `gui: about` to add your name in, format it as you'd like, and give it `gaboutLink` (if you're adding a link). Then search for the label, `aboutLink:`, and add a new ternary expression.
+If you'd like to contribute, fork, or make any personal edits, feel free to add your own name and link to the [About section](Lib/guiMake.ahk#L32).
 
 My only request is to keep my name and link in the About section. Other than that, have fun!
 
