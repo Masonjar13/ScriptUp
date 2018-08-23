@@ -1,5 +1,5 @@
 # ScriptUp
-Latest tested working version: AHK_L v1.1.29.01, DLL: 1.1.29.01-H002
+Latest tested working version: AHK_L v1.1.29.01, DLL: 1.1.30.00-H001
 
 [AutoHotkey Forum Thread](https://autohotkey.com/boards/viewtopic.php?f=6&t=36656)
 
