@@ -167,8 +167,7 @@ class fileList {
     }
     close(scriptName){
         try{
-            this.scripts[scriptName].thread.ahkTerminate()
-            MemoryFreeLibrary(this.scripts[scriptName].thread[""])
+            this.scripts[scriptName].thread.timeout:=this.quitTimeout
             this.scripts[scriptName].thread:=""
         }
     }
@@ -203,6 +202,9 @@ ahkthread_free(obj:=""){
 	return objects
   else If objects.HasKey(obj)
 	objects.Remove(obj)
+}
+ahkthread_release(o){
+  o.ahkterminate(o.timeout?o.timeout:0),MemoryFreeLibrary(o[""])
 }
 ahkthread(s:="",p:="",IsFile:=0,dll:=""){
   static ahkdll,ahkmini,base,functions
