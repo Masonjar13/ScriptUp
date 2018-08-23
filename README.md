@@ -27,7 +27,7 @@ Easily add as many AHK scripts as you'd like, from any folder on your PC, and Sc
   - If you have "Start on User Login" active and move ScriptUp, it will automatically fix the registry entry (restart ScriptUp from the new path to do so).
   - When running as a compiled script, you must have a shortcut (.lnk) to "Lib" in the same folder as ScriptUp to allow access to the [Standard Library](https://autohotkey.com/docs/Functions.htm#lib).
   - If using an onExit sub/function in one of the added scripts, it must not exceed 30s of process time. If something requires more than that amount of time, [set the value here](ScriptUp.ahk#L70).
-  - Do NOT use any variation of #If except for #If. #IfWinActive, #IfWinExist, etc., will make the thread crash on exit. This is due to deprication in __H.
+  - Do NOT use any variation of #If except for #If. #IfWinActive, #IfWinExist, etc., will make the thread crash on exit. This is due to deprication in _H.
   - SetWorkingDir will be overridden. They will take on the working directory of the worker script, which is in the library. Full paths will need to be used in scripts.
   - With the release of v1, paths to scripts/DLLs may be relative to workerH. You can modify the path while adding a new script or change it in Lib\config.ini.
 
