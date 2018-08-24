@@ -17,7 +17,8 @@ addScriptFinal:
 gui,addScript:submit
 iniWrite,% newScript . "?" . dllType,% sini,scripts,% getFilename(newScript)
 gosub,genList
-worker.exec("global threadList`nthreadList.genList()`nthreadList.run(""" . getFilename(newScript) . """)")
+worker.execFunc("do","genList","","")
+worker.execAFunc("do","run",getFilename(newScript),"")
 return
 
 genList:
@@ -51,7 +52,7 @@ gosub setDllFinal
 return
 
 setDllFinal:
-worker.exec("threadList.setDll(""" . nDllType . """,""" . nDllPath . """)")
+worker.execAFunc("do","setDll",nDllType,nDllPath)
 return
 
 lvCallback:

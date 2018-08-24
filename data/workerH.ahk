@@ -12,6 +12,15 @@ threadList.runAll()
 setTimer,updateStatus,100
 return
 
+do(funct,p1,p2){ ; execAFunc does not support varadic functions or optional params
+    global threadList
+    params:=[]
+    loop 2
+        if(p%a_index%)
+            params.push(p%a_index%)
+    threadList[funct](params*)
+}
+
 updateStatus:
 stateList:=threadList.returnStates()
 return
@@ -93,7 +102,8 @@ class fileList {
         toolTip
     }
     edit(scriptName){
-        run,% "edit """ . this.scripts[scriptName].path . """"
+        try
+            run,% "edit """ . this.scripts[scriptName].path . """"
     }
     exec(scriptName,code){
         if(this.pauseState(scriptName))
@@ -102,8 +112,7 @@ class fileList {
             return this.scripts[scriptName].thread.ahkExec(code)
     }
     reload(scriptName){
-        this.close(scriptName)
-        return this.run(scriptName)
+        this.scripts[scriptName].thread.ahkReload()
     }
     listlines(scriptName){
         if(this.scripts[scriptName].dll="Mini")
@@ -167,7 +176,10 @@ class fileList {
     }
     close(scriptName){
         try{
-            this.scripts[scriptName].thread.timeout:=this.quitTimeout
+            try{
+                this.scripts[scriptName].thread.ahkTerminate()
+                MemoryFreeLibrary(this.scripts[scriptName].thread[""])
+            }
             this.scripts[scriptName].thread:=""
         }
     }
@@ -202,9 +214,6 @@ ahkthread_free(obj:=""){
 	return objects
   else If objects.HasKey(obj)
 	objects.Remove(obj)
-}
-ahkthread_release(o){
-  o.ahkterminate(o.timeout?o.timeout:0),MemoryFreeLibrary(o[""])
 }
 ahkthread(s:="",p:="",IsFile:=0,dll:=""){
   static ahkdll,ahkmini,base,functions

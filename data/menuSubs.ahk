@@ -1,26 +1,26 @@
 ﻿reloadScript:
 lv_getText(scr,selectedRow)
-worker.exec("threadList.reload(""" . scr . """)")
+worker.execAFunc("do","reload",scr,"")
 return
 
 pauseScript:
 lv_getText(scr,selectedRow)
-worker.exec("threadList.pause(""" . scr . """)")
+worker.execAFunc("do","pause",scr,"")
 return
 
 suspendScript:
 lv_getText(scr,selectedRow)
-worker.exec("threadList.suspend(""" . scr . """)")
+worker.execAFunc("do","suspend",scr,"")
 return
 
 listlinesScript:
 lv_getText(scr,selectedRow)
-worker.exec("threadList.listlines(""" . scr . """)")
+worker.execAFunc("do","listlines",scr,"")
 return
 
 editScript:
 lv_getText(scr,selectedRow)
-worker.exec("threadList.edit(""" . scr . """)")
+worker.execAFunc("do","edit",scr,"")
 return
 
 removeScript:
@@ -40,7 +40,8 @@ return
 
 removeScriptFinal:
 iniDelete,% sini,scripts,% scr
-worker.exec("threadList.remove(""" . scr . """)`nthreadList.genList()")
+worker.execFunc("do","remove",scr,"")
+worker.execAFunc("do","genList","","")
 gosub genList
 return
 
@@ -52,5 +53,5 @@ return
 
 execScriptFinal:
 gui,execCode:submit,nohide
-worker.exec("threadList.exec(""" . scrx . """,""" . execScriptCode . """)")
+worker.execAFunc("do","exec",scrx,execScriptCode)
 return

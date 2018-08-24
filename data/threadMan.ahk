@@ -145,6 +145,10 @@ class threadMan {
     }
     
     execAFunc(func,params*){
+        if(this.pauseState()){
+            msgbox,,Error,Code can not be executed while thread is paused.
+            return
+        }
         if(!params.length())
             return dllCall(this.dllObj.getProcAddress("ahkPostFunction"),"Str",func,"Cdecl UInt")
         if(params.length()=1)
