@@ -2,7 +2,7 @@
 #persistent
 #noEnv
 setWorkingDir,% a_scriptDir
-#include data\threadMan.ahk
+#include %a_scriptDir%\data\threadMan.ahk
 menu,tray,tip,ScriptUp
 
 ; compiled installs
@@ -38,7 +38,7 @@ if(!errorLevel) ; auto-correct if the script has been moved
         regWrite,REG_SZ,% regStartupPath,ScriptUp,% a_scriptFullPath
 
 ; start worker
-#include data\guiMake.ahk
+#include %a_scriptDir%\data\guiMake.ahk
 worker:=new threadMan(workerdll)
 worker.newFromFile(workerfile)
 onExit,cleanup
@@ -54,10 +54,10 @@ if(firstRun){
 setTimer,checkStates,1000
 return
 
-#include data\guiSubs.ahk
-#include data\optionSubs.ahk
-#include data\menuSubs.ahk
-#include data\functions.ahk
+#include %a_scriptDir%\data\guiSubs.ahk
+#include %a_scriptDir%\data\optionSubs.ahk
+#include %a_scriptDir%\data\menuSubs.ahk
+#include %a_scriptDir%\data\functions.ahk
 
 checkStates:
 stateList:=worker.varGet("stateList")
