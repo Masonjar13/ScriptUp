@@ -112,7 +112,8 @@ class fileList {
             return this.scripts[scriptName].thread.ahkExec(code)
     }
     reload(scriptName){
-        this.scripts[scriptName].thread.ahkReload()
+        this.close(scriptName)
+        return this.run(scriptName)
     }
     listlines(scriptName){
         if(this.scripts[scriptName].dll="Mini")
