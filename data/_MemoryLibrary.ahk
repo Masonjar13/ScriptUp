@@ -24,7 +24,7 @@ DllCall(MemLib.GetProcAddress("ahkterminate")),     	MemLib.Free()
 DllCall(NewMemLib.GetProcAddress("ahkterminate")),      NewMemLib.Free()
 MsgBox AutoHotkey.dll threads terminated and memory freed
 */
-#include %a_scriptDir%\_Struct.ahk
+#include %a_scriptDir%\data\_Struct.ahk
 Class _MemoryLibrary {
   static MEMORYMODULE :=(A_PtrSize=8?"
   (LTrim
