@@ -1,4 +1,4 @@
-﻿#include <_MemoryLibrary>
+﻿#include %a_scriptDir%\_MemoryLibrary.ahk
 
 class threadMan {
     ahkDllPath:=
