@@ -28,6 +28,8 @@ gui,add,checkbox,% "-wrap gdeleteWarning vdeleteWarningc checked" . hideDeleteWa
 gui,add,checkbox,% "-wrap glogonRun vlogonRunc checked" . (loginRun?1:0),Start on User Login
 gui,add,picture,gsetDll vStd,% imgs . "\b1.png"
 gui,add,picture,gsetDll vMini,% imgs . "\b2.png"
+gui,add,picture,glibShort,% imgs . "\b3.png"
+
 
 ; about tab
 gui,tab,About

@@ -1,26 +1,26 @@
 ﻿reloadScript:
 lv_getText(scr,selectedRow)
-worker.execAFunc("do","reload",scr,"")
+worker.ahkPostFunction("do","reload",scr,"")
 return
 
 pauseScript:
 lv_getText(scr,selectedRow)
-worker.execAFunc("do","pause",scr,"")
+worker.ahkPostFunction("do","pause",scr,"")
 return
 
 suspendScript:
 lv_getText(scr,selectedRow)
-worker.execAFunc("do","suspend",scr,"")
+worker.ahkPostFunction("do","suspend",scr,"")
 return
 
 listlinesScript:
 lv_getText(scr,selectedRow)
-worker.execAFunc("do","listlines",scr,"")
+worker.ahkPostFunction("do","listlines",scr,"")
 return
 
 editScript:
 lv_getText(scr,selectedRow)
-worker.execAFunc("do","edit",scr,"")
+worker.ahkPostFunction("do","edit",scr,"")
 return
 
 removeScript:
@@ -40,8 +40,8 @@ return
 
 removeScriptFinal:
 iniDelete,% sini,scripts,% scr
-worker.execFunc("do","remove",scr,"")
-worker.execAFunc("do","genList","","")
+worker.ahkFunction("do","remove",scr,"")
+worker.ahkPostFunction("do","genList","","")
 gosub genList
 return
 
@@ -53,5 +53,5 @@ return
 
 execScriptFinal:
 gui,execCode:submit,nohide
-worker.execAFunc("do","exec",scrx,execScriptCode)
+worker.ahkPostFunction("do","exec",scrx,execScriptCode)
 return

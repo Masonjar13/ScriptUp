@@ -17,8 +17,8 @@ addScriptFinal:
 gui,addScript:submit
 iniWrite,% newScript . "?" . dllType,% sini,scripts,% getFilename(newScript)
 gosub,genList
-worker.execFunc("do","genList","","")
-worker.execAFunc("do","run",getFilename(newScript),"")
+worker.ahkFunction("do","genList","","")
+worker.ahkPostFunction("do","run",getFilename(newScript),"")
 return
 
 genList:
@@ -52,7 +52,14 @@ gosub setDllFinal
 return
 
 setDllFinal:
-worker.execAFunc("do","setDll",nDllType,nDllPath)
+worker.ahkPostFunction("do","setDll",nDllType,nDllPath)
+return
+
+libShort:
+fileDelete,% a_scriptDir . "\Lib.lnk"
+if(!ahkDir)
+    splitPath,a_ahkPath,,ahkDir
+fileCreateShortcut,% ahkDir . "\Lib",% a_scriptDir . "\Lib.lnk"
 return
 
 lvCallback:

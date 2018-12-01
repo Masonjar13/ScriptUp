@@ -2,7 +2,6 @@
 #persistent
 #noEnv
 setWorkingDir,% a_scriptDir
-#include %a_scriptDir%\data\threadMan.ahk
 menu,tray,tip,ScriptUp
 
 ; compiled installs
@@ -39,8 +38,7 @@ if(!errorLevel) ; auto-correct if the script has been moved
 
 ; start worker
 #include %a_scriptDir%\data\guiMake.ahk
-worker:=new threadMan(workerdll)
-worker.newFromFile(workerfile)
+worker:=ahkThread(workerfile,params,1,workerdll)
 onExit,cleanup
 
 ; set DLLs/open gui automatically for first run
@@ -60,7 +58,7 @@ return
 #include %a_scriptDir%\data\functions.ahk
 
 checkStates:
-stateList:=worker.varGet("stateList")
+stateList:=worker.ahkGetVar["stateList"]
 loop,parse,stateList,`,
 {
     lv_getText(pstate,a_index,2)
@@ -70,5 +68,5 @@ loop,parse,stateList,`,
 return
 
 cleanUp:
-worker.quit(30000)
+worker.ahkTerminate[30000]
 exitApp
