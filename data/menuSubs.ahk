@@ -20,7 +20,7 @@ return
 
 editScript:
 lv_getText(scr,selectedRow)
-worker.ahkPostFunction("do","edit",scr,"")
+worker.ahkPostFunction("do","edit",scr,editPath)
 return
 
 removeScript:

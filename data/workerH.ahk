@@ -101,9 +101,14 @@ class fileList {
         }
         toolTip
     }
-    edit(scriptName){
-        try
-            run,% "edit """ . this.scripts[scriptName].path . """"
+    edit(scriptName,editor:=""){
+        if(editor){
+            try
+                run,% """" . editor . """ """ . this.scripts[scriptName].path . """"
+        }else{
+            try
+                run,% "edit """ . this.scripts[scriptName].path . """"
+        }
     }
     exec(scriptName,code){
         if(this.pauseState(scriptName))

@@ -14,6 +14,9 @@ if(a_isCompiled){
     fileInstall,data\dlls\std64.dll,data\dlls\std64.dll
     fileInstall,data\imgs\b1.png,data\imgs\b1.png
     fileInstall,data\imgs\b2.png,data\imgs\b2.png
+    fileInstall,data\imgs\b3.png,data\imgs\b3.png
+    fileInstall,data\imgs\b4.png,data\imgs\b4.png
+    fileInstall,data\imgs\b5.png,data\imgs\b5.png
     fileInstall,data\imgs\MXIII.png,data\imgs\MXIII.png
     fileInstall,data\workerH.ahk,data\workerH.ahk
 }
@@ -30,6 +33,7 @@ if(!fileExist(sini))
     firstRun:=1
 
 ; load settings
+iniRead,editPath,% sini,settings,editPath,0
 iniRead,hideDeleteWarning,% sini,settings,hideDeleteWarning,0
 regRead,loginRun,% regStartupPath:="HKCU\Software\Microsoft\Windows\CurrentVersion\Run",ScriptUp
 if(!errorLevel) ; auto-correct if the script has been moved

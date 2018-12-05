@@ -62,6 +62,17 @@ if(!ahkDir)
 fileCreateShortcut,% ahkDir . "\Lib",% a_scriptDir . "\Lib.lnk"
 return
 
+editPath:
+inputBox,editPathNew,Edit Path,% "Set the path of the editor to use for the ""Edit"" item on the context menu. Leave empty to use registry entry.`nCurrent path: " . (editPath?editPath:"Use Registry") . "."
+if(!errorLevel)
+    iniWrite,% editPath:=editPathNew,% sini,settings,editPath
+return
+
+regEditPath:
+regWrite,REG_SZ,HKCU\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit,LastKey,Computer\HKEY_CLASSES_ROOT\AutoHotkeyScript\shell\Edit\command
+run,regedit.exe
+return
+
 lvCallback:
 if(a_guiEvent="Normal")
     selectedRow:=a_eventInfo
